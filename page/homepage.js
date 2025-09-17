@@ -9,7 +9,8 @@ import { faker } from '@faker-js/faker';
         this.loginButton =page.getByRole('button', { name: 'Login' });
         this.signupemailaddress=page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Email Address')
 
-        this.name=page.getByRole('textbox', { name: 'Name' });
+        this.name=page.getByRole('textbox', { name: 'Name' });  
+        
         this.signupbutton=page.getByRole('button', { name: 'Signup' });
         this.addtocartproduct=page.locator('.nav.nav-pills.nav-justified > li > a');
         this.addtocartbutton=page.getByRole('button', { name: ' Add to cart' });
