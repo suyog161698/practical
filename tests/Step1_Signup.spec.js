@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 function saveTestData(email, password) {
-  const filePath = path.resolve('d:/saucedemo/test-data/testData.json');
+  const filePath = path.resolve(__dirname, '../test-data/testData.json'); // ✅ relative
   let data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
   data.userid.email = email;
   data.userid.password = password;
