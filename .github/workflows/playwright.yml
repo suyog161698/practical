@@ -25,8 +25,8 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
-    - name: Run Playwright tests (headed for debug)
-      run: npx playwright test --headed --reporter=html
+    - name: Run Playwright tests
+      run: xvfb-run npx playwright test --reporter=html
 
 
     - name: Upload Playwright HTML Report
