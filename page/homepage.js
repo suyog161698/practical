@@ -68,13 +68,9 @@ import { faker } from '@faker-js/faker';
     async orderproductwithcreditcard(nameoncard, cardnumber, expirymonth, expiryyear, cvv){
         await this.nameoncard.fill(nameoncard);
         await this.cardnumber.click();
-        await this.cardnumber.click();
         await this.cardnumber.fill(cardnumber);
-        await this.cvv.click();
         await this.cvv.fill(cvv);
-        await this.expirymonth.click();
         await this.expirymonth.fill(expirymonth);
-        await this.expiryyear.click();
         await this.expiryyear.fill(expiryyear);
         await this.payandconfirmorderbutton.click();
     }

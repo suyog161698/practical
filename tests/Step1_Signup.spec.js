@@ -2,9 +2,14 @@ import { test, expect } from '@playwright/test';
 import HomePage from '../page/homepage.js';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Recreate __dirname for ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 function saveTestData(email, password) {
-  const filePath = path.resolve(__dirname, '../test-data/testData.json'); // ✅ relative
+  const filePath = path.resolve(__dirname, '../test-data/testData.json'); // ✅ relative path
   let data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
   data.userid.email = email;
   data.userid.password = password;
@@ -15,8 +20,6 @@ test('User can sign up and create an account', async ({ page }) => {
   const home = new HomePage(page);
 
   await page.goto('/');
- 
-    
 
   // Generate email
   const email = home.generateRandomEmail();
@@ -30,6 +33,9 @@ test('User can sign up and create an account', async ({ page }) => {
   // Save email and password
   saveTestData(email, password);
 
-  await expect(page.getByText('Account Created! Congratulations! Your new account has been successfully')).toBeVisible();
+  await expect(
+    page.getByText('Account Created! Congratulations! Your new account has been successfully')
+  ).toBeVisible();
+
   await page.getByRole('link', { name: 'Continue' }).click();
 });
