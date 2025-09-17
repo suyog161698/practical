@@ -1,0 +1,26 @@
+{
+  "name": "saucedemo-playwright",
+  "version": "1.0.0",
+  "description": "Playwright automation project for Sauce Demo",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report",
+    "install-browsers": "playwright install"
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^10.0.0",
+    "@playwright/test": "^1.40.0"
+  }
+}
