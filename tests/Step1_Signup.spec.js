@@ -3,39 +3,60 @@ import HomePage from '../page/homepage.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import testData from '../test-data/testData.json' assert { type: "json" };
 
-// Recreate __dirname for ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-function saveTestData(email, password) {
-  const filePath = path.resolve(__dirname, '../test-data/testData.json'); // ✅ relative path
-  let data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-  data.userid.email = email;
-  data.userid.password = password;
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-}
+ test.describe('Signup flow', () => {
+  // Recreate __dirname for ESM
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
 
-test('User can sign up and create an account', async ({ page }) => {
-  const home = new HomePage(page);
+  // Function to save test data to JSON file
+  function saveTestData(email, password) {
+    const filePath = path.resolve(__dirname, '../test-data/testData.json'); // ✅ relative path
+    let data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    data.userid.email = email;
+    data.userid.password = password;
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  }
 
-  await page.goto('/');
+  let home;
 
-  // Generate email
-  const email = home.generateRandomEmail();
+  test.beforeEach(async ({ page }) => {
+    // Clear cookies and local storage before each test
+    await page.goto('/'); // Navigate to a blank page to access localStorage
+    home = new HomePage(page); }) 
 
-  // Use the generated email in signup
-  await home.signup(email);
+  test('User can sign up and create an account', async ({ page }) => {
+    // Generate email
+    const email = home.generateRandomEmail();
+    // Use the generated email in signup
+    await home.signup(email);
+    // Create account and get password
+    const password = await home.createaccount();
+    // Save email and password
+    saveTestData(email, password);
+    await expect(
+      page.getByText('Account Created! Congratulations! Your new account has been successfully')
+    ).toBeVisible();
 
-  // Create account and get password
-  const password = await home.createaccount();
+    await page.getByRole('link', { name: 'Continue' }).click();
+  });
 
-  // Save email and password
-  saveTestData(email, password);
+  test('User can sign up with already exisiting email', async ({ page }) => {
+    await home.signup(testData.userid.email);
+    await expect(page.getByText('Email Address already exist!')).toBeVisible();
+    // Add further steps/assertions as needed
+  });
 
-  await expect(
-    page.getByText('Account Created! Congratulations! Your new account has been successfully')
-  ).toBeVisible();
+  test('User can sign up with wrong email', async ({ page }) => {
+    await home.signup(testData.userid.invalidEmail);
+    const invalid =await home.invalidemail();
+     await expect(invalid).toBe(
+    "Please include an '@' in the email address. 'invalidemaildomain' is missing an '@'."
+  );
+   
+    // Add further steps/assertions as needed
+  });
 
-  await page.getByRole('link', { name: 'Continue' }).click();
 });

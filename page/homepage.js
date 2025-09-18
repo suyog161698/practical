@@ -86,12 +86,17 @@ import { faker } from '@faker-js/faker';
          this.userlastname = faker.person.lastName();
         await this.signLoginLink.click();
         await this.name.click();
-        await this.name.fill(this.userfirstname + ' ' + this.lastname);
+        await this.name.fill(this.userfirstname);
         await this.signupemailaddress.click();
         await this.signupemailaddress.fill(email);
         await this.signupbutton.click();
       }
+ 
+      async invalidemail(){
+       const popupText = await this.signupemailaddress.evaluate(el => el.validationMessage);
+       return popupText;
 
+      }
 
       async createaccount(){
         const address = faker.location.streetAddress();
@@ -108,6 +113,7 @@ import { faker } from '@faker-js/faker';
          this.usercity = faker.location.city();
          this.number = faker.phone.number('##########');
          this.password = faker.internet.password(10, true); // length 10, with symbols
+         
        
         await this.title.check();
         await this.signupname.click();
