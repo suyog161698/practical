@@ -27,8 +27,8 @@ import testData from '../test-data/testData.json' assert { type: "json" };
     await page.goto('/'); // Navigate to a blank page to access localStorage
     home = new HomePage(page); }) 
 
-  test('User can sign up and create an account', async ({ page }) => {
-    // Generate email
+  test('User can sign up and create an account ', async ({ page }) => {
+    // G enerate email
     const email = home.generateRandomEmail();
     // Use the generated email in signup
     await home.signup(email);
