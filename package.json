@@ -1,26 +1,20 @@
 {
-  "name": "saucedemo-playwright",
+  "name": "orangehrm",
   "version": "1.0.0",
-  "description": "Playwright automation project for Sauce Demo",
-  "type": "module",
+  "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "playwright test",
-    "test:headed": "playwright test --headed",
-    "test:ui": "playwright test --ui",
-    "test:debug": "playwright test --debug",
-    "report": "playwright show-report",
-    "install-browsers": "playwright install"
-  },
-  "keywords": [
-    "playwright",
-    "automation",
-    "testing"
-  ],
+  "scripts": {},
+  "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "commonjs",
   "devDependencies": {
-    "@faker-js/faker": "^10.0.0",
-    "@playwright/test": "^1.40.0"
+    "@playwright/test": "^1.54.1",
+    "@types/node": "^24.0.13"
+  },
+  "dependencies": {
+    "puppeteer": "^24.12.1",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   }
 }
