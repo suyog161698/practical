@@ -1,58 +1,44 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
+import { on } from 'events';
+
+/**
+ * Read environment variables from file.
+ * https://github.com/motdotla/dotenv
+ */
+// import dotenv from 'dotenv';
+// import path from 'path';
+// dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
   testDir: './tests',
-  // Increase overall test timeout
-  timeout: 120000,
-  // Increase default expect timeout
-  expect: { timeout: 20000 },
   /* Run tests in files in parallel */
-  fullyParallel: false,
+  fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
- 
+  forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: 0,
+  retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: 1,
+  workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'https://automationexercise.com/',
+    // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-    
-   headless: process.env.CI ? true : false, // ✅ headless in CI, headed locally
-    viewport: { width: 1280, height: 720 },
-    
-    /* Take screenshot on failure */
-    screenshot: 'only-on-failure',
-    
-    /* Record video on failure */
-    video: 'retain-on-failure',
-
-    // Increase navigation and action timeouts
-    navigationTimeout: 60000,
-    actionTimeout: 30000,
+    trace: 'on',
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
-      use: {
-        channel: 'chrome',
-        viewport: null, // Let the browser use the full window size
-        launchOptions: {
-          args: ['--start-maximized'],
-        },
-      }
+      use: { ...devices['Desktop Chrome'] },
     },
 
     // {
@@ -89,7 +75,8 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   // webServer: {
   //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
+  //   url: 'http://localhost:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
 });
+
